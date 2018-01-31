@@ -1,0 +1,38 @@
+##################################################
+### Install Gitlab
+- name: Install Gitlab
+  apt: name={{ item }} state=latest
+  with_items:
+    - gitlab
+  environment: 
+    EXTERNAL_URL: http://gitlab.test
+
+##################################################
+### Configure Gitlab
+- name: Configure gitlab as nginx user
+  replace:
+    path: /etc/nginx/nginx.conf
+    regexp: '^user vagrant;$'
+    replace: 'user gitlab;'
+  register: nginxconfig
+
+- name: Configure Gitlab
+  replace:
+    path: /etc/gitlab/gitlab.yml
+    regexp: '^    #host: localhost$'
+    replace: '    host: gitlab.test'
+  register: config
+
+##################################################
+### Restart Gitlab if config changed
+- name: Restart Nginx if config changed
+  service:
+    name: nginx
+    state: restarted
+  when: nginxconfig.changed
+
+- name: Restart Gitlab if config changed
+  service:
+    name: gitlab
+    state: restarted
+  when: config.changed
