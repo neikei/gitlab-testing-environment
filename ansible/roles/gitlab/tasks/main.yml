@@ -1,38 +1,34 @@
 ##################################################
+### Install required packages
+- name: Install required packages
+  apt: name={{ item }} state=present
+  with_items:
+    - curl
+    - openssh-server
+    - ca-certificates
+
+##################################################
 ### Install Gitlab
+- name: Download Installer
+  get_url:
+    url="https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh"
+    dest="/tmp/gitlab_installer.sh"
+    mode=777
+    force=yes
+
+- name: Run Installer
+  shell: /tmp/gitlab_installer.sh
+  args:
+    executable: /bin/bash
+
 - name: Install Gitlab
   apt: name={{ item }} state=latest
   with_items:
-    - gitlab
+    - gitlab-ce
   environment: 
     EXTERNAL_URL: http://gitlab.test
 
 ##################################################
-### Configure Gitlab
-- name: Configure gitlab as nginx user
-  replace:
-    path: /etc/nginx/nginx.conf
-    regexp: '^user vagrant;$'
-    replace: 'user gitlab;'
-  register: nginxconfig
-
-- name: Configure Gitlab
-  replace:
-    path: /etc/gitlab/gitlab.yml
-    regexp: '^    #host: localhost$'
-    replace: '    host: gitlab.test'
-  register: config
-
-##################################################
-### Restart Gitlab if config changed
-- name: Restart Nginx if config changed
-  service:
-    name: nginx
-    state: restarted
-  when: nginxconfig.changed
-
-- name: Restart Gitlab if config changed
-  service:
-    name: gitlab
-    state: restarted
-  when: config.changed
+### Configure firewall
+- name: Allow port 80 for Gitlab
+  ufw: rule=allow port=80
