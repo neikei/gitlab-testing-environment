@@ -9,14 +9,13 @@
 
 ##################################################
 ### Install Gitlab
-- name: Download Installer
+- name: Download Gitlab Installer
   get_url:
     url="https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh"
     dest="/tmp/gitlab_installer.sh"
     mode=777
-    force=yes
 
-- name: Run Installer
+- name: Run Gitlab Installer
   shell: /tmp/gitlab_installer.sh
   args:
     executable: /bin/bash
@@ -27,6 +26,24 @@
     - gitlab-ce
   environment: 
     EXTERNAL_URL: http://gitlab.test
+
+##################################################
+### Install Gitlab-Runner
+- name: Download Gitlab-Runner Installer
+  get_url:
+    url="https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh"
+    dest="/tmp/gitlab_runner_installer.sh"
+    mode=777
+
+- name: Run Gitlab-Runner Installer
+  shell: /tmp/gitlab_runner_installer.sh
+  args:
+    executable: /bin/bash
+
+- name: Install Gitlab-Runner
+  apt: name={{ item }} state=latest
+  with_items:
+    - gitlab-runner
 
 ##################################################
 ### Configure firewall
