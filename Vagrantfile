@@ -17,6 +17,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provider "parallels"
   config.vm.provider "virtualbox"
 
+  if !Vagrant.has_plugin?('vagrant-hostmanager')
+     puts "The vagrant-hostmanager plugin is required. Please install it with \"vagrant plugin install vagrant-hostmanager\""
+     exit
+  end
+
   if Vagrant.has_plugin?('vagrant-vbguest')
       config.vbguest.auto_update = true
   end
