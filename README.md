@@ -17,6 +17,8 @@ Gitlab testing environment in a Vagrantbox based on Debian and provisioned with 
 3. vagrant up
 4. ... wait ...
 5. Open Gitlab in your web browser: http://gitlab.test
+6. Set new password
+7. Login with user "root" and your password
 
 ## Feedback, Issues and Pull-Requests
 
