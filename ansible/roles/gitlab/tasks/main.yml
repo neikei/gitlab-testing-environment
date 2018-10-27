@@ -16,9 +16,7 @@
     mode=777
 
 - name: Run Gitlab Installer
-  shell: /tmp/gitlab_installer.sh
-  args:
-    executable: /bin/bash
+  command: /tmp/gitlab_installer.sh
 
 - name: Install Gitlab
   apt: name={{ item }} state=latest
@@ -36,9 +34,7 @@
     mode=777
 
 - name: Run Gitlab-Runner Installer
-  shell: /tmp/gitlab_runner_installer.sh
-  args:
-    executable: /bin/bash
+  command: /tmp/gitlab_runner_installer.sh
 
 - name: Install Gitlab-Runner
   apt: name={{ item }} state=latest
