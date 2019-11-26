@@ -47,5 +47,5 @@
 ### Configure firewall
 - name: Allow port 80 for Gitlab
   ufw:
-    port: 80
+    port: "80"
     rule: allow
