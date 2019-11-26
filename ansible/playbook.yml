@@ -1,5 +1,5 @@
  - hosts: all
    roles:
-    - { role: basics }
-    - { role: updates }
-    - { role: gitlab }
+    - role: basics
+    - role: updates
+    - role: gitlab
