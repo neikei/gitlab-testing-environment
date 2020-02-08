@@ -58,4 +58,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
        ansible.verbose = ""
    end
 
+  # Post-up message
+  config.vm.post_up_message = "See https://github.com/neikei/gitlab-testing-environment for help and bug reports."
+
 end
